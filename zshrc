@@ -7,25 +7,28 @@ fi
 # Load zplug
 source ~/.zplug/init.zsh
 
+# change prezto fork
+export _ZPLUG_PREZTO="zsh-users/prezto"
+
 # Plugins
-zplug "zplug/zplug" # let zplug manage itself
+zplug "zplug/zplug", hook-build:"zplug --self-manage" # let zplug manage itself
 zplug "supercrabtree/k"
-zplug "rupa/z", use:"*.sh"
+zplug "rupa/z", use:"z.sh"
 zplug "modules/history", from:prezto
 zplug "modules/osx", from:prezto # osx aliases
 zplug "modules/homebrew", from:prezto # homebrew aliases
-zplug "zsh-users/zsh-syntax-highlighting", nice:9
-zplug "zsh-users/zsh-history-substring-search", nice:10
+zplug "zsh-users/zsh-syntax-highlighting", defer:3
+zplug "zsh-users/zsh-history-substring-search", defer:3
 
 # Install and manage nvm
 zplug "lukechilds/zsh-nvm"
 # npm completions
-zplug "lukechilds/zsh-better-npm-completion", nice:10
+zplug "lukechilds/zsh-better-npm-completion", defer:3
 zplug "zsh-users/zsh-completions"
 
 # Theme
 zplug "mafredri/zsh-async"
-zplug "sindresorhus/pure"
+zplug "sindresorhus/pure", as:theme
 
 # Install plugins if not installed
 if ! zplug check --verbose; then
