@@ -1,11 +1,13 @@
+export ZPLUG_HOME="$HOME/.zplug"
+
 # Check if zplug is installed
-if [[ ! -d "$HOME/.zplug" ]]; then
-  git clone https://github.com/zplug/zplug "$HOME/.zplug/repos/zplug/zplug"
-  ln -s "$HOME/.zplug/repos/zplug/zplug/init.zsh" "$HOME/.zplug/init.zsh"
+if [[ ! -d $ZPLUG_HOME ]]; then
+  git clone https://github.com/zplug/zplug $ZPLUG_HOME
+  source $ZPLUG_HOME/init.zsh && zplug update --self
 fi
 
 # Load zplug
-source ~/.zplug/init.zsh
+source $ZPLUG_HOME/init.zsh
 
 # change prezto fork
 export _ZPLUG_PREZTO="zsh-users/prezto"
@@ -28,7 +30,7 @@ zplug "zsh-users/zsh-completions"
 
 # Theme
 zplug "mafredri/zsh-async"
-zplug "sindresorhus/pure", as:theme
+zplug "sindresorhus/pure"
 
 # Install plugins if not installed
 if ! zplug check --verbose; then
