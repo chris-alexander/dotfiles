@@ -1,41 +1,24 @@
-export ZPLUG_HOME="$HOME/.zplug"
+source ~/.zplugin/bin/zplugin.zsh
+autoload -Uz _zplugin
+(( ${+_comps} )) && _comps[zplugin]=_zplugin
 
-# Check if zplug is installed
-if [[ ! -d $ZPLUG_HOME ]]; then
-  git clone https://github.com/zplug/zplug $ZPLUG_HOME
-  source $ZPLUG_HOME/init.zsh && zplug update --self
-fi
+NVM_LAZY_LOAD=true
+zplugin light "lukechilds/zsh-nvm"
+zplugin ice pick"async.zsh" src"pure.zsh"; zplugin light "sindresorhus/pure"
+zplugin ice "rupa/z" pick"z.sh"; zplugin light "rupa/z"
+zplugin light "supercrabtree/k"
+zplugin light "zsh-users/zsh-history-substring-search"
 
-# Load zplug
-source $ZPLUG_HOME/init.zsh
+zplugin snippet PZT::modules/history/init.zsh
+# zplugin ice svn; zplugin snippet PZT::modules/osx
+zplugin snippet PZT::modules/homebrew/init.zsh
 
-# change prezto fork
-export _ZPLUG_PREZTO="zsh-users/prezto"
+zplugin light "lukechilds/zsh-better-npm-completion"
+zplugin light "zsh-users/zsh-completions"
 
-# Plugins
-zplug "zplug/zplug", hook-build:"zplug --self-manage" # let zplug manage itself
-zplug "supercrabtree/k"
-zplug "rupa/z", use:"z.sh"
-zplug "modules/history", from:prezto
-zplug "modules/osx", from:prezto # osx aliases
-zplug "modules/homebrew", from:prezto # homebrew aliases
-zplug "zsh-users/zsh-syntax-highlighting", defer:3
-zplug "zsh-users/zsh-history-substring-search", defer:3
+zplugin light "zdharma/fast-syntax-highlighting"
 
-# Install and manage nvm
-zplug "lukechilds/zsh-nvm"
-# npm completions
-zplug "lukechilds/zsh-better-npm-completion", defer:3
-zplug "zsh-users/zsh-completions"
+autoload -Uz compinit
+compinit
 
-# Theme
-zplug "mafredri/zsh-async"
-zplug "sindresorhus/pure"
-
-# Install plugins if not installed
-if ! zplug check --verbose; then
-  zplug install
-fi
-
-# Source plugins and add commands to $path
-zplug load --verbose
+zplugin cdreplay -q
