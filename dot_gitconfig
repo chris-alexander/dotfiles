@@ -7,7 +7,9 @@
   hist = log --graph --pretty=format:'%Cred%h%Creset %s%C(yellow)%d%Creset %Cgreen(%cr)%Creset [%an]' --abbrev-commit --date=relative
 
 [core]
-	excludesfile = /Users/chris/.gitignore
+  pager = less -q -R
+	excludesfile = ~/.gitignore
+	editor = code --wait
   # attributesfile = ~/.gitattributes
   # pager = diff-highlight | diff-so-fancy | less -r
 
@@ -46,11 +48,18 @@
 	helper = osxkeychain
 [push]
 	default = current
-[difftool "sourcetree"]
-	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
-	path = 
-[mergetool "sourcetree"]
-	cmd = /Applications/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
-	trustExitCode = true
 [commit]
 	gpgsign = true
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+[diff]
+	tool = vscode
+[difftool "vscode"]
+	cmd = code --wait --diff $LOCAL $REMOTE
+[merge]
+	tool = vscode
+[mergetool "vscode"]
+	cmd = code --wait $MERGED
