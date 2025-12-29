@@ -9,12 +9,12 @@
 [core]
   pager = less -q -R
 	excludesfile = ~/.gitignore
-	editor = code --wait
+	editor = ${VISUAL:-${EDITOR:-vi}}
   # attributesfile = ~/.gitattributes
   # pager = diff-highlight | diff-so-fancy | less -r
 
 [color]
-  ui = always
+  ui = auto
 [color "branch"]
   current = yellow reverse
   local = yellow
@@ -41,11 +41,9 @@
 
 [user]
 	name = Chris Alexander
-	email = hello@chrisalexander.me.uk
-	signingkey = 0A049FEC
-	singingkey = 804D67310A049FEC
-[credential]
-	helper = osxkeychain
+	email = 2815297+chris-alexander@users.noreply.github.com
+	signingkey = 804D67310A049FEC
+
 [push]
 	default = current
 [commit]
@@ -63,3 +61,5 @@
 	tool = vscode
 [mergetool "vscode"]
 	cmd = code --wait $MERGED
+[init]
+	defaultBranch = main

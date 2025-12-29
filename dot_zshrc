@@ -1,0 +1,17 @@
+# Use starship for prompt if available
+if command -v starship >/dev/null 2>&1; then
+  eval "$(starship init zsh)"
+fi
+
+# Sensible defaults
+export EDITOR="${EDITOR:-vi}"
+export PAGER="${PAGER:-less}"
+
+# Enable completion system
+autoload -Uz compinit
+compinit
+
+# macOS-specific tooling
+if [[ "$OSTYPE" == darwin* ]]; then
+  export STM32_PRG_PATH="/Applications/STMicroelectronics/STM32Cube/STM32CubeProgrammer/STM32CubeProgrammer.app/Contents/MacOs/bin"
+fi
