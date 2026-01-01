@@ -12,4 +12,18 @@ if status is-interactive
   if command -s starship >/dev/null
     starship init fish | source
   end
+
+  # Volta
+  if test -d "$HOME/.volta/bin"
+    fish_add_path "$HOME/.volta/bin"
+   end
+  
+  # WSL: bridge Windows OpenSSH agent into WSL
+  if set -q WSL_DISTRO_NAME
+    if not set -q SSH_AUTH_SOCK
+      if type -q wsl2-ssh-agent
+        wsl2-ssh-agent 2>/dev/null | source
+      end
+    end
+  end
 end
