@@ -1,8 +1,3 @@
-# Add Java to PATH if available
-if test -n "$JAVA_HOME"
-  fish_add_path "$JAVA_HOME/bin"
-end
-
 if status is-interactive
   # Disable greeting
   set fish_greeting
