@@ -1,0 +1,47 @@
+{{- /* Collect keys from SSH agent and local files */ -}}
+{{- $keys := list -}}
+
+{{- /* Try SSH agent first (works in WSL with bridged agent) */ -}}
+{{- $agentKeys := output "ssh-add" "-L" | trim -}}
+{{- if and $agentKeys (not (hasPrefix "The agent has no identities" $agentKeys)) -}}
+{{-   range splitList "\n" $agentKeys -}}
+{{-     if . -}}
+{{-       $keys = append $keys . -}}
+{{-     end -}}
+{{-   end -}}
+{{- end -}}
+
+{{- /* Also check for local key files */ -}}
+{{- $sshDir := joinPath .chezmoi.homeDir ".ssh" -}}
+{{- range glob (joinPath $sshDir "*.pub") -}}
+{{-   $keyContent := include . | trim -}}
+{{-   if not (has $keyContent $keys) -}}
+{{-     $keys = append $keys $keyContent -}}
+{{-   end -}}
+{{- end -}}
+
+{{- /* Build numbered menu */ -}}
+{{- $menu := "" -}}
+{{- range $i, $key := $keys -}}
+{{-   $parts := splitList " " $key -}}
+{{-   $type := index $parts 0 -}}
+{{-   $comment := index $parts 2 | default "unnamed" -}}
+{{-   $menu = printf "%s\n  %d. %s (%s)" $menu (add $i 1) $comment $type -}}
+{{- end -}}
+{{- $menu = printf "%s\n  %d. Enter manually" $menu (add (len $keys) 1) -}}
+
+{{- $prompt := printf "Select SSH key for git commit signing:%s\nEnter number" $menu -}}
+{{- $selection := promptIntOnce . "ssh_key_selection" $prompt -}}
+
+{{- $signingKey := "" -}}
+{{- if eq $selection (add (len $keys) 1) -}}
+{{-   $signingKey = promptStringOnce . "git.signingkey" "Signing key (key::ssh-ed25519 AAAA...)" -}}
+{{- else if and (ge $selection 1) (le $selection (len $keys)) -}}
+{{-   $keyContent := index $keys (sub $selection 1) -}}
+{{-   $signingKey = printf "key::%s" $keyContent -}}
+{{- else -}}
+{{-   $signingKey = promptStringOnce . "git.signingkey" "Invalid selection. Enter signing key manually (key::ssh-ed25519 AAAA...)" -}}
+{{- end -}}
+
+[data.git]
+signingkey = {{ $signingKey | quote }}
