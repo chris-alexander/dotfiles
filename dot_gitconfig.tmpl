@@ -1,0 +1,54 @@
+[user]
+  name = Chris Alexander
+  email = 2815297+chris-alexander@users.noreply.github.com
+  signingkey = {{ .git.signingkey | quote }}
+
+[core]
+  pager = less -q -R
+  excludesfile = ~/.gitignore
+  editor = ${VISUAL:-${EDITOR:-vi}}
+
+[init]
+  defaultBranch = main
+
+[push]
+  default = current
+
+[pull]
+  rebase = true
+
+[fetch]
+  prune = true
+
+[commit]
+  gpgsign = true
+
+[gpg]
+  format = ssh
+
+[help]
+  autocorrect = prompt
+
+[rerere]
+  enabled = true
+
+[color]
+  ui = auto
+
+[alias]
+  tags = tag -l
+  branches = branch -a
+  remotes = remote -v
+  hist = log --graph --pretty=format:'%Cred%h%Creset %s%C(yellow)%d%Creset %Cgreen(%cr)%Creset [%an]' --abbrev-commit --date=relative
+
+[diff]
+  tool = vscode
+
+[difftool "vscode"]
+  cmd = code --wait --diff $LOCAL $REMOTE
+
+[merge]
+  tool = vscode
+
+[mergetool "vscode"]
+  cmd = code --wait --merge $REMOTE $LOCAL $BASE $MERGED
