@@ -17,7 +17,12 @@ if status is-interactive
   if test -d "$HOME/.volta/bin"
     fish_add_path "$HOME/.volta/bin"
    end
-  
+
+  # User-local binaries
+  if test -d "$HOME/.local/bin"
+    fish_add_path "$HOME/.local/bin"
+  end
+
   # WSL: bridge Windows OpenSSH agent into WSL
   if set -q WSL_DISTRO_NAME
     if not set -q SSH_AUTH_SOCK
